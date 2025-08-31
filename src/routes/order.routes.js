@@ -4,9 +4,12 @@ import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.post("/", requireAuth, create);
-router.get("/me", requireAuth, myOrders);
-router.get("/", requireAuth, requireAdmin, all);
-router.patch("/:id/status", requireAuth, requireAdmin, updateStatus);
+// User routes
+router.post("/", requireAuth, create);        // Create order
+router.get("/me", requireAuth, myOrders);    // Get current user's orders
+
+// Admin routes
+router.get("/", requireAuth, requireAdmin, all);           // Get all orders
+router.patch("/:id/status", requireAuth, requireAdmin, updateStatus); // Update order status
 
 export default router;

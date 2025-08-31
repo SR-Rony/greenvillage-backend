@@ -4,10 +4,13 @@ import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.get("/", list);
-router.get("/:slug", getOne);
-router.post("/", requireAuth, requireAdmin, create);
-router.patch("/:id", requireAuth, requireAdmin, update);
-router.delete("/:id", requireAuth, requireAdmin, remove);
+// Public routes
+router.get("/", list);              // List all active products
+router.get("/:slug", getOne);       // Get a single product by slug
+
+// Protected admin routes
+router.post("/", requireAuth, requireAdmin, create);   // Create a new product
+router.patch("/:id", requireAuth, requireAdmin, update); // Update a product
+router.delete("/:id", requireAuth, requireAdmin, remove); // Delete a product
 
 export default router;

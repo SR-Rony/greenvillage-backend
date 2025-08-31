@@ -13,7 +13,7 @@ export async function register(req, res) {
 
     const verificationCode = crypto.randomInt(100000, 999999).toString();
     const user = await User.create({ ...parsed, verificationCode });
-
+    
     await sendMail({
       to: user.email,
       subject: "Verify your Greenvillage account",
@@ -31,6 +31,8 @@ export async function register(req, res) {
 
 export async function verifyEmail(req, res) {
   const { email, code } = req.body;
+  console.log(email,code);
+  
   const user = await User.findOne({ email });
   if (!user) return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
   if (user.isVerified) return res.json({ message: "Already verified" });
