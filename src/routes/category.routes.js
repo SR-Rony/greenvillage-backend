@@ -5,7 +5,9 @@ import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 const router = Router();
 
 router.get("/", list);
-router.post("/", requireAuth, requireAdmin, create);
-router.delete("/:id", requireAuth, requireAdmin, remove);
+router.post("/", create);
+// router.post("/", requireAuth, requireAdmin, create);
+router.delete("/:id", remove);
+// router.delete("/:id", requireAuth, requireAdmin, remove);
 
 export default router;
