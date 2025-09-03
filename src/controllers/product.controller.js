@@ -1,6 +1,8 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 import slugify from "slugify";
+import cloudinary from "../config/cloudinary.js";
+import fs from "fs";
 
 /**
  * List all active products
@@ -47,29 +49,54 @@ export const getOne = async (req, res) => {
 /**
  * Create a new product
  */
+
 export const create = async (req, res) => {
   try {
-    const { name, slug, description, price, unit, quantity, images, category } = req.body;
+    const { name, price, unit, quantity, description, category } = req.body;
 
-    if (!images || !images.length)
-      return res.status(400).json({ success: false, message: "Upload at least 1 product image" });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ success: false, message: "Upload at least 1 image" });
+    }
 
+    // Upload files to Cloudinary
+    const uploadedImages = [];
+    for (const file of req.files) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: "products",
+        resource_type: "image",
+      });
+      uploadedImages.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+
+      // Delete local file after upload
+      fs.unlinkSync(file.path);
+    }
+
+    // Generate slug from name
+    const slug = slugify(name, { lower: true, strict: true });
+
+    // Create product
     const product = await Product.create({
       name,
-      slug: slugify(slug || name, { lower: true, strict: true }),
-      description,
+      slug,
       price,
       unit,
       quantity,
-      images,
+      description,
       category,
+      images: uploadedImages,
     });
 
     res.status(201).json({ success: true, product });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    console.error("Create product error:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
 
 /**
  * Update a product
