@@ -7,7 +7,7 @@ import { upload } from "../middlewares/upload.js";
 const router = express.Router();
 
 router.get("/", list);
-router.get("/:slug", getOne);
+router.get("/:id", getOne);
 router.post("/", create); // images field
 router.put("/:id", update); // optional
 router.delete("/:id", remove);

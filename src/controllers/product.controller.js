@@ -33,12 +33,18 @@ export const list = async (req, res) => {
  */
 export const getOne = async (req, res) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug }).populate(
+
+    // Use _id instead of id
+    const product = await Product.findById(req.params.id).populate(
       "category",
       "name slug"
     );
-    if (!product)
-      return res.status(404).json({ success: false, message: "Product not found" });
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
 
     res.json({ success: true, product });
   } catch (err) {
@@ -105,12 +111,25 @@ export const update = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+    console.log(req.body);
+    
 
-    if (updates.slug) updates.slug = slugify(updates.slug, { lower: true, strict: true });
+    // ✅ Auto-generate slug from name
+    if (updates.name) {
+      updates.slug = slugify(updates.name, { lower: true, strict: true });
+    }
 
+    // ✅ Fix category reference
+    if (updates.category && updates.category._id) {
+      updates.category = updates.category._id;
+    }
+
+    // ✅ Update product
     const product = await Product.findByIdAndUpdate(id, updates, { new: true });
-    if (!product)
+
+    if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });
+    }
 
     res.json({ success: true, product });
   } catch (err) {
