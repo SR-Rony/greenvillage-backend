@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://greenvillage.vercel.app/'
+  'https://greenvillage-gxpz.vercel.app/'
 ];
 // CORS
 app.use(cors({
