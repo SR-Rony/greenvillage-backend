@@ -19,8 +19,6 @@ pids
 coverage/
 
 # dotenv environment variables file
-.env
-.env.local
 .env.*.local
 
 # Next.js build output
@@ -44,3 +42,4 @@ Thumbs.db
 
 # Cloudinary uploads (if local)
 uploads/
+config.bat
