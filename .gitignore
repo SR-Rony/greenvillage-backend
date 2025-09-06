@@ -19,8 +19,6 @@ pids
 coverage/
 
 # dotenv environment variables file
-.env
-.env.local
 .env.*.local
 
 # Next.js build output
@@ -28,7 +26,6 @@ coverage/
 out/
 
 # VS Code settings
-.vscode/
 
 # Mac system files
 .DS_Store
@@ -44,3 +41,4 @@ Thumbs.db
 
 # Cloudinary uploads (if local)
 uploads/
+config.bat
