@@ -20,6 +20,12 @@ app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
 
+
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://greenvillage.vercel.app/'
+];
 // CORS
 app.use(cors({
   origin: function (origin, callback) {
