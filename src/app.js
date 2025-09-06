@@ -21,10 +21,15 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
 
 // CORS
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 app.use(cors({
-  origin: CLIENT_URL,
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // ✅ allows sending cookies cross-domain
 }));
 
 // Rate Limit
