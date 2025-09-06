@@ -43,6 +43,11 @@ app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoute);
 app.use("/api/orders", orderRoutes);
 
+
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
+});
+
 // 404
 app.use((req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({ message: "Route not found" });
